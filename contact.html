@@ -60,7 +60,11 @@
         </div>
       </div>
 
-      <form class="contact-form reveal" id="contactForm">
+      <form class="contact-form reveal" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none">
+          <label>Don't fill this out: <input name="bot-field"></label>
+        </p>
         <div class="form-row">
           <div class="form-group">
             <label for="cf-name">Name *</label>
