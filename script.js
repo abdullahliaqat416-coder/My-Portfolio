@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealEls.forEach(el => observer.observe(el));
 
-  /* ---------- Contact form (front-end only demo) ---------- */
+  /* ---------- Contact form (Netlify Forms submission) ---------- */
   const contactForm = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
 
@@ -99,9 +99,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      formSuccess.textContent = `Thanks ${name.value.trim()}, your message has been noted. I'll get back to you soon.`;
-      formSuccess.classList.add('show');
-      contactForm.reset();
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(contactForm)).toString(),
+      })
+        .then(() => {
+          formSuccess.textContent = `Thanks ${name.value.trim()}, your message has been sent. I'll get back to you soon.`;
+          formSuccess.classList.add('show');
+          contactForm.reset();
+        })
+        .catch(() => {
+          formSuccess.textContent = 'Something went wrong sending your message. Please try again or email me directly.';
+          formSuccess.classList.add('show');
+        })
+        .finally(() => {
+          if (submitBtn) submitBtn.disabled = false;
+        });
     });
   }
 
