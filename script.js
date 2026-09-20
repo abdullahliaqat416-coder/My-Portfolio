@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealEls.forEach(el => observer.observe(el));
 
-  /* ---------- Contact form (Netlify Forms submission) ---------- */
+  /* ---------- Contact form (Web3Forms submission) ---------- */
   const contactForm = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
 
@@ -102,15 +102,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       if (submitBtn) submitBtn.disabled = true;
 
-      fetch('/', {
+      const formData = new FormData(contactForm);
+      const payload = Object.fromEntries(formData);
+
+      fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(contactForm)).toString(),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
       })
-        .then(() => {
-          formSuccess.textContent = `Thanks ${name.value.trim()}, your message has been sent. I'll get back to you soon.`;
-          formSuccess.classList.add('show');
-          contactForm.reset();
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            formSuccess.textContent = `Thanks ${name.value.trim()}, your message has been sent. I'll get back to you soon.`;
+            formSuccess.classList.add('show');
+            contactForm.reset();
+          } else {
+            formSuccess.textContent = 'Something went wrong sending your message. Please try again or email me directly.';
+            formSuccess.classList.add('show');
+          }
         })
         .catch(() => {
           formSuccess.textContent = 'Something went wrong sending your message. Please try again or email me directly.';
