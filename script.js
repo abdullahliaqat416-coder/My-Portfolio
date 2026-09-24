@@ -33,11 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Services: See More / See Less ---------- */
   const seeMoreBtn = document.getElementById('seeMoreBtn');
-  const extraServices = document.getElementById('extraServices');
+  const servicesGrid = document.getElementById('servicesGrid');
 
-  if (seeMoreBtn && extraServices) {
+  if (seeMoreBtn && servicesGrid) {
     seeMoreBtn.addEventListener('click', () => {
-      const isOpen = extraServices.classList.toggle('show');
+      const isOpen = servicesGrid.classList.toggle('show-extra');
       seeMoreBtn.innerHTML = isOpen
         ? '<i class="fa-solid fa-chevron-up"></i> See Less'
         : '<i class="fa-solid fa-chevron-down"></i> See More';
@@ -131,6 +131,102 @@ document.addEventListener('DOMContentLoaded', () => {
         .finally(() => {
           if (submitBtn) submitBtn.disabled = false;
         });
+    });
+  }
+
+  /* ---------- Hero eyebrow typewriter ---------- */
+  const typeEl = document.getElementById('typeRole');
+  if (typeEl) {
+    const roles = [
+      'Front End Developer',
+      'Web Developer',
+      'Backend Developer',
+      'SaaS App Developer',
+      'Web App Developer',
+      'Chrome Extension Developer'
+    ];
+    let roleIndex = 0;
+    let charIndex = roles[0].length;
+    let deleting = false;
+    typeEl.textContent = roles[0];
+
+    const TYPE_SPEED = 90;
+    const DELETE_SPEED = 45;
+    const HOLD_TIME = 1400;
+
+    function tick() {
+      const current = roles[roleIndex];
+
+      if (!deleting) {
+        charIndex++;
+        typeEl.textContent = current.slice(0, charIndex);
+        if (charIndex >= current.length) {
+          deleting = true;
+          setTimeout(tick, HOLD_TIME);
+          return;
+        }
+        setTimeout(tick, TYPE_SPEED);
+      } else {
+        charIndex--;
+        typeEl.textContent = current.slice(0, charIndex);
+        if (charIndex <= 0) {
+          deleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+          charIndex = 0;
+          setTimeout(tick, 300);
+          return;
+        }
+        setTimeout(tick, DELETE_SPEED);
+      }
+    }
+    setTimeout(tick, HOLD_TIME);
+  }
+
+  /* ---------- Contact page: slide between Contact and Order panel ---------- */
+  const formShell = document.querySelector('.contact-form-card');
+  const formToggleBtn = document.getElementById('formModeToggle');
+  const orderChips = document.querySelectorAll('.order-chip');
+  const cfServiceInput = document.getElementById('cf-service');
+  const cfServiceTagWrap = document.getElementById('cf-service-tag-wrap');
+  const cfServiceTag = document.getElementById('cf-service-tag');
+  const cfOrderTextarea = document.getElementById('cf-order');
+
+  if (formShell && formToggleBtn) {
+    const setToggleLabel = (isOrderMode) => {
+      formToggleBtn.querySelector('span').textContent = isOrderMode ? 'Contact Me' : 'Switch to Order';
+    };
+
+    formToggleBtn.addEventListener('click', () => {
+      const isOrderMode = formShell.classList.toggle('order-mode');
+      setToggleLabel(isOrderMode);
+
+      formToggleBtn.classList.remove('pulse');
+      // restart the pulse animation reliably
+      void formToggleBtn.offsetWidth;
+      formToggleBtn.classList.add('pulse');
+      setTimeout(() => formToggleBtn.classList.remove('pulse'), 450);
+    });
+
+    orderChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        orderChips.forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+
+        const service = chip.dataset.service;
+        if (cfServiceInput) cfServiceInput.value = service;
+        if (cfServiceTag && cfServiceTagWrap) {
+          cfServiceTag.textContent = service;
+          cfServiceTagWrap.style.display = 'block';
+        }
+        if (cfOrderTextarea && !cfOrderTextarea.value.trim()) {
+          cfOrderTextarea.placeholder = `Tell me more about your "${service}" project...`;
+        }
+
+        setTimeout(() => {
+          formShell.classList.remove('order-mode');
+          setToggleLabel(false);
+        }, 350);
+      });
     });
   }
 

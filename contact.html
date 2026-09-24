@@ -60,27 +60,64 @@
         </div>
       </div>
 
-      <form class="contact-form reveal" id="contactForm">
-        <input type="hidden" name="access_key" value="22f5c1d7-6604-473d-aacf-0ec9e0432d94">
-        <input type="hidden" name="subject" value="New message from Abdullah Portfolio Contact Form">
-        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="cf-name">Name *</label>
-            <input type="text" id="cf-name" name="name" placeholder="Your full name" required>
-          </div>
-          <div class="form-group">
-            <label for="cf-email">Email *</label>
-            <input type="email" id="cf-email" name="email" placeholder="you@example.com" required>
+      <div class="contact-form-card reveal">
+        <h3 class="form-card-title">Send a Message</h3>
+        <button type="button" class="form-toggle-btn" id="formModeToggle">
+          <i class="fa-solid fa-right-left"></i> <span>Switch to Order</span>
+        </button>
+
+        <div class="form-viewport">
+          <div class="form-slider" id="formSlider">
+
+            <div class="form-pane">
+              <form class="contact-form" id="contactForm">
+                <input type="hidden" name="access_key" value="22f5c1d7-6604-473d-aacf-0ec9e0432d94">
+                <input type="hidden" name="subject" value="New message from Abdullah Portfolio Contact Form">
+                <input type="hidden" name="service" id="cf-service" value="">
+                <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="cf-name">Name *</label>
+                    <input type="text" id="cf-name" name="name" placeholder="Your full name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="cf-email">Email *</label>
+                    <input type="email" id="cf-email" name="email" placeholder="you@example.com" required>
+                  </div>
+                </div>
+                <div class="form-group" id="cf-service-tag-wrap" style="display:none;">
+                  <span class="service-tag" id="cf-service-tag"></span>
+                </div>
+                <div class="form-group">
+                  <label for="cf-order">Message</label>
+                  <textarea id="cf-order" name="message" rows="5" placeholder="Tell me a bit about your project..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send Now</button>
+                <div class="form-success" id="formSuccess"></div>
+              </form>
+            </div>
+
+            <div class="form-pane">
+              <div class="order-panel">
+                <h3>Select a Service</h3>
+                <p>Pick what you need — I'll get in touch about that service.</p>
+                <div class="order-services-grid" id="orderServicesGrid">
+                  <button type="button" class="order-chip" data-service="Landing Pages"><i class="fa-solid fa-file-lines"></i> Landing Pages</button>
+                  <button type="button" class="order-chip" data-service="E-Commerce Store"><i class="fa-solid fa-cart-shopping"></i> E-Commerce Store</button>
+                  <button type="button" class="order-chip" data-service="Custom Website"><i class="fa-solid fa-globe"></i> Custom Website</button>
+                  <button type="button" class="order-chip" data-service="Blogs"><i class="fa-solid fa-pen-nib"></i> Blogs</button>
+                  <button type="button" class="order-chip" data-service="WordPress Website"><i class="fa-brands fa-wordpress-simple"></i> WordPress Website</button>
+                  <button type="button" class="order-chip" data-service="UI/UX Design"><i class="fa-solid fa-compass-drafting"></i> UI/UX Design</button>
+                  <button type="button" class="order-chip" data-service="Chrome Extension Development"><i class="fa-brands fa-chrome"></i> Chrome Extension</button>
+                  <button type="button" class="order-chip" data-service="SaaS App Development"><i class="fa-solid fa-robot"></i> SaaS App</button>
+                  <button type="button" class="order-chip" data-service="Web App Development"><i class="fa-solid fa-laptop-code"></i> Web App</button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-        <div class="form-group">
-          <label for="cf-order">Message</label>
-          <textarea id="cf-order" name="message" rows="5" placeholder="Tell me a bit about your project..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send Now</button>
-        <div class="form-success" id="formSuccess"></div>
-      </form>
+      </div>
     </div>
   </div>
 </section>
